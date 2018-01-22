@@ -6,4 +6,4 @@ va在加载app时，会将当前app的存储路径和so库文件复制到自己�
 
 
 
-######ps:代码很简单，如有更好的检测方式，欢迎联系wuxiaoqiu1993@gmail.com
+###### ps:代码很简单，如有更好的检测方式，欢迎联系wuxiaoqiu1993@gmail.com
