@@ -23,7 +23,7 @@ char *cmdline::getProcessName() {
     int fd_t = svc::_open(path_t, O_RDONLY);
     if (fd_t > 0) {
         int read_count = (int) svc::_read(fd_t, buffer, 1024);
-        close(fd_t);
+        svc::_close(fd_t);
         if (read_count > 0) {
             return buffer;
         }
