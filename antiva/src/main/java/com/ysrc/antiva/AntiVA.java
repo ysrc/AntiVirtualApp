@@ -28,6 +28,12 @@ public class AntiVA {
         return pkg.equals(process) && JniHelper.isRunInVa();
     }
 
+    /**
+     * 过滤当前非主进程的进程
+     * @param cxt
+     * @param pid
+     * @return
+     */
     private static String getProcessName(Context cxt, int pid) {
         try {
             ActivityManager am = (ActivityManager) cxt.getSystemService(Context.ACTIVITY_SERVICE);
