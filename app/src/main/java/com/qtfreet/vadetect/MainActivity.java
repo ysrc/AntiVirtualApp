@@ -20,4 +20,6 @@ public class MainActivity extends AppCompatActivity {
         tv.setText("当前是否运行在va环境中： " + a);
     }
 
+
+
 }

@@ -13,7 +13,7 @@ import java.util.List;
 
 public class AntiVA {
     public static boolean isRunInVa(Context cxt) {
-        if(cxt==null){
+        if (cxt == null) {
             throw new IllegalArgumentException("the context must be notnull");
         }
         int pid = Process.myPid();
@@ -30,6 +30,7 @@ public class AntiVA {
 
     /**
      * 过滤当前非主进程的进程
+     *
      * @param cxt
      * @param pid
      * @return

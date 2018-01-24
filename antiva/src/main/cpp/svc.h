@@ -55,6 +55,8 @@ public:
     static int _close(int fd);
 
     static ssize_t _read(int __fd, void* __buf, size_t __count);
+
+    static int _openat(int __dir_fd, const char *__path, int __flags)
 };
 
 

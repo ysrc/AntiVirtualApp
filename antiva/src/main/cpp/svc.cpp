@@ -58,3 +58,8 @@ int svc::_access(const char *file, int mode) {
 int svc::_close(int fd) {
     return (int) syscall(__NR_close, fd);
 }
+
+int svc::_openat(int __dir_fd, const char *__path, int __flags) {
+    int ret = (int) syscall(__NR_openat, __dir_fd, __path, __flags);
+    return ret;
+}
