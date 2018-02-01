@@ -28,6 +28,22 @@ public class AntiVA {
         return pkg.equals(process) && JniHelper.isRunInVa();
     }
 
+    public static boolean isMultiOpen(Context cxt) {
+        if (cxt == null) {
+            throw new IllegalArgumentException("the context must be notnull");
+        }
+        int pid = Process.myPid();
+        String process = getProcessName(cxt, pid);
+        if (TextUtils.isEmpty(process)) {
+            throw new RuntimeException("get process name failed");
+        }
+        String pkg = cxt.getPackageName();
+        if (TextUtils.isEmpty(pkg)) {
+            throw new RuntimeException("get package name failed");
+        }
+        return pkg.equals(process) && JniHelper.isMultiOpen() > 0;
+    }
+
     /**
      * 过滤当前非主进程的进程
      *

@@ -11,4 +11,6 @@ public class JniHelper {
     }
 
     public native static boolean isRunInVa();
+
+    public native static int isMultiOpen();
 }

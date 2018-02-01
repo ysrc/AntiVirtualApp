@@ -1,8 +1,9 @@
 #include <jni.h>
 #include <string>
-#include "svc.h"
+#include "syscalls.h"
 #include "cmdline.h"
 #include "analysis.h"
+#include "utils.h"
 
 using namespace std;
 
@@ -14,14 +15,32 @@ using namespace std;
 
 #define SO_DATA_DATA "/data/data/"
 #define SO_DATA_DATA_LEN strlen(SO_DATA_DATA)
-
 extern "C" {
 
+JNIEXPORT jint JNICALL
+Java_com_ysrc_antiva_JniHelper_isMultiOpen(JNIEnv *env, jclass type) {
+
+    int count = analysis::countPathFromUid();
+    char *process = cmdline::getProcessName();
+    if (process != NULL) {
+        jobject context = utils::getGlobalContext(env);
+        jstring pkg = utils::getPackageName(env, context);
+        const char *pkgname = env->GetStringUTFChars(pkg, 0);
+        env->DeleteLocalRef(context);
+        env->DeleteLocalRef(pkg);
+        if (pkgname != NULL) {
+            if (strcmp(process, pkgname) != 0) {
+                count++;
+            }
+        }
+    }
+    return count;
+}
 
 JNIEXPORT jboolean JNICALL
 Java_com_ysrc_antiva_JniHelper_isRunInVa(JNIEnv *env, jclass type) {
     vector<string> v;
-    int pid = svc::_getpid();
+    int pid = Syscalls::_getpid();
     char *process = cmdline::getProcessName(); //获取当前app进程名
     if (process == NULL) {
         return JNI_FALSE;

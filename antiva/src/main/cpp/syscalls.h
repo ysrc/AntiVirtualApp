@@ -35,7 +35,7 @@
 #include <string.h>
 #include <stdlib.h>
 
-class svc {
+class Syscalls {
 
 public:
     static int _gettimeofday(struct timeval *tv, struct timezone *tz);
@@ -43,6 +43,8 @@ public:
     static int _kill(pid_t pid, int signal);
 
     static pid_t _getpid(void);
+
+    static uid_t _getuid(void);
 
     static __noreturn void _exit(int i);
 
@@ -54,9 +56,9 @@ public:
 
     static int _close(int fd);
 
-    static ssize_t _read(int __fd, void* __buf, size_t __count);
+    static ssize_t _read(int __fd, void *__buf, size_t __count);
 
-    static int _openat(int __dir_fd, const char *__path, int __flags)
+    static int _openat(int __dir_fd, const char *__path, int __flags);
 };
 
 

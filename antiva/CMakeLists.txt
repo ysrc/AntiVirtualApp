@@ -18,10 +18,11 @@ add_library( # Sets the name of the library.
 
              # Provides a relative path to your source file(s).
              src/main/cpp/antiva.cpp
-             src/main/cpp/svc.cpp
+             src/main/cpp/syscalls.cpp
              src/main/cpp/analysis.cpp
              src/main/cpp/cmdline.cpp
-             src/main/cpp/stringUtils.cpp)
+             src/main/cpp/stringUtils.cpp
+             src/main/cpp/utils.cpp)
 
 # Searches for a specified prebuilt library and stores the path as a
 # variable. Because CMake includes system libraries in the search path by

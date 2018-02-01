@@ -11,11 +11,22 @@
 #include <string.h>
 #include <string>
 #include "stringUtils.h"
+#include "syscalls.h"
+
 using namespace std;
+#ifndef INLINE
+#define INLINE inline
+#endif
+
+#ifndef ALWAYS_INLINE
+#define ALWAYS_INLINE INLINE __attribute__((always_inline))
+#endif
 
 class analysis {
 public:
     static void findInMaps(int, const char *filter, vector<string> &result);
+
+    static int countPathFromUid();
 };
 
 
