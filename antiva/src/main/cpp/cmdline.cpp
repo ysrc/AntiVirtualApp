@@ -18,12 +18,11 @@ char *cmdline::getProcessName() {
     memset(buffer, 0, 1024);
     char path_t[256] = {0};
     int pid = Syscalls::_getpid();
-    memset(path_t, 0, sizeof(path_t));
     sprintf(path_t, "/proc/%d/cmdline", pid);
-    int fd_t = Syscalls::_open(path_t, O_RDONLY);
-    if (fd_t > 0) {
-        int read_count = (int) Syscalls::_read(fd_t, buffer, 1024);
-        Syscalls::_close(fd_t);
+    int fd = Syscalls::_open(path_t, O_RDONLY);
+    if (fd > 0) {
+        int read_count = (int) Syscalls::_read(fd, buffer, 1024);
+        Syscalls::_close(fd);
         if (read_count > 0) {
             return buffer;
         }

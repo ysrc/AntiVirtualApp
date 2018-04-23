@@ -25,14 +25,15 @@ Java_com_ysrc_antiva_JniHelper_isMultiOpen(JNIEnv *env, jclass type) {
     if (process != NULL) {
         jobject context = utils::getGlobalContext(env);
         jstring pkg = utils::getPackageName(env, context);
-        const char *pkgname = env->GetStringUTFChars(pkg, 0);
-        env->DeleteLocalRef(context);
-        env->DeleteLocalRef(pkg);
-        if (pkgname != NULL) {
-            if (strcmp(process, pkgname) != 0) {
+        const char *pkgName = env->GetStringUTFChars(pkg, 0);
+        if (pkgName != NULL) {
+            if (strcmp(process, pkgName) != 0) {
                 count++;
             }
         }
+        env->DeleteLocalRef(context);
+        env->ReleaseStringUTFChars(pkg,pkgName);
+        free(process);
     }
     return count;
 }
