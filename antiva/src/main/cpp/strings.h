@@ -7,7 +7,7 @@
 
 #include <string.h>
 
-class stringUtils {
+class Strings {
 
 public:
 

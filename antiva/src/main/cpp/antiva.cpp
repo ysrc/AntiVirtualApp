@@ -3,7 +3,6 @@
 #include "syscalls.h"
 #include "cmdline.h"
 #include "analysis.h"
-#include "utils.h"
 
 using namespace std;
 
@@ -17,34 +16,18 @@ using namespace std;
 #define SO_DATA_DATA_LEN strlen(SO_DATA_DATA)
 extern "C" {
 
-JNIEXPORT jint JNICALL
-Java_com_ysrc_antiva_JniHelper_isMultiOpen(JNIEnv *env, jclass type) {
-
+ALWAYS_INLINE int detectFakeUid() {
+    //正常情况下一个uid仅对应一个应用进程
     int count = analysis::countPathFromUid();
-    char *process = cmdline::getProcessName();
-    if (process != NULL) {
-        jobject context = utils::getGlobalContext(env);
-        jstring pkg = utils::getPackageName(env, context);
-        const char *pkgName = env->GetStringUTFChars(pkg, 0);
-        if (pkgName != NULL) {
-            if (strcmp(process, pkgName) != 0) {
-                count++;
-            }
-        }
-        env->DeleteLocalRef(context);
-        env->ReleaseStringUTFChars(pkg,pkgName);
-        free(process);
-    }
     return count;
 }
 
-JNIEXPORT jboolean JNICALL
-Java_com_ysrc_antiva_JniHelper_isRunInVa(JNIEnv *env, jclass type) {
+ALWAYS_INLINE int detectFakePath() {
     vector<string> v;
-    int pid = Syscalls::_getpid();
+    int pid = Sys::wrap_getpid();
     char *process = cmdline::getProcessName(); //获取当前app进程名
     if (process == NULL) {
-        return JNI_FALSE;
+        return 0;
     }
     size_t len = strlen(process);
     int i = 0;
@@ -56,15 +39,15 @@ Java_com_ysrc_antiva_JniHelper_isRunInVa(JNIEnv *env, jclass type) {
         if (strstr(lib, process) != NULL) {
             //正常情况下，so的加载路径只会是如下几种模式，并且包名一定是原始app的包名
             //va执行时会将当前app的库文件拷贝到自己的私有目录下，执行重定向后进行加载，所以当前执行的路径为va虚拟机的路径
-            if (stringUtils::startsWith(lib, SO_APP_LIB)) {
+            if (Strings::startsWith(lib, SO_APP_LIB)) {
                 if (strncmp(lib + SO_APP_LIB_LEN, process, len)) {
                     i++;
                 }
-            } else if (stringUtils::startsWith(lib, SO_DATA_APP)) {
+            } else if (Strings::startsWith(lib, SO_DATA_APP)) {
                 if (strncmp(lib + SO_DATA_APP_LEN, process, len)) {
                     i++;
                 }
-            } else if (stringUtils::startsWith(lib, SO_DATA_DATA)) {
+            } else if (Strings::startsWith(lib, SO_DATA_DATA)) {
                 if (strncmp(lib + SO_DATA_DATA_LEN, process, len)) {
                     i++;
                 }
@@ -74,8 +57,11 @@ Java_com_ysrc_antiva_JniHelper_isRunInVa(JNIEnv *env, jclass type) {
     free(process);
     v.clear();
     vector<string>(v).swap(v);
-    return (jboolean) (i > 0);
-
+    return i;
 }
 
+JNIEXPORT jint JNICALL
+Java_com_ysrc_antiva_AntiVaNative_isRunInVa(JNIEnv *env, jclass type) {
+    return detectFakePath() + detectFakeUid();
+}
 }

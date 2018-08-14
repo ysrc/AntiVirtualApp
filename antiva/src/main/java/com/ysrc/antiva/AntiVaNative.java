@@ -4,13 +4,12 @@ package com.ysrc.antiva;
  * Created by qtfreet00 on 2018/1/22.
  */
 
-public class JniHelper {
+public class AntiVaNative {
 
     static {
         System.loadLibrary("antiva");
     }
 
-    public native static boolean isRunInVa();
+    public native static int isRunInVa();
 
-    public native static int isMultiOpen();
 }

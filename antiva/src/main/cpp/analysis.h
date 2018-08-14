@@ -5,12 +5,12 @@
 #ifndef VADETECT_ANALYSIS_H
 #define VADETECT_ANALYSIS_H
 
-#include "log.h"
 #include <vector>
 #include <stdio.h>
 #include <string.h>
 #include <string>
-#include "stringUtils.h"
+#include <pwd.h>
+#include "strings.h"
 #include "syscalls.h"
 
 using namespace std;

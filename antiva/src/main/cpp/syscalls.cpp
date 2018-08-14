@@ -3,68 +3,33 @@
 //
 
 #include "syscalls.h"
-#include <asm/unistd.h>
 
 
-int Syscalls::_gettimeofday(struct timeval *tv, struct timezone *tz) {
-    int ret = (int) syscall(__NR_gettimeofday, tv, tz);
-    return ret;
-}
-
-int Syscalls::_kill(pid_t pid, int signal) {
-    int ret = (int) syscall(__NR_kill, pid, signal);
-    return ret;
-}
-
-pid_t Syscalls::_getpid(void) {
+pid_t Sys::wrap_getpid(void) {
     pid_t pid = (pid_t) syscall(__NR_getpid);
     return pid;
 }
 
-uid_t Syscalls::_getuid(void) {
-    uid_t uid = (uid_t) syscall(__NR_getuid);
-    return uid;
-}
-
-__noreturn void Syscalls::_exit(int i) {
-    syscall(__NR_exit, i);
-}
-
-int Syscalls::_faccessat(int dirfd, const char *pathname, int mode, int flags) {
-    int ret = (int) syscall(__NR_faccessat, dirfd, pathname, mode, flags);
+int Sys::wrap_open(const char *path, int flags) {
+    int ret = (int) syscall(__NR_openat, AT_FDCWD, path, flags);
     return ret;
 }
 
-int Syscalls::_open(const char *__path, int __flags) {
-    int ret;
-#if defined(__aarch64__)
-    ret = open(__path, __flags);
-#else
-    ret = syscall(__NR_open, __path, __flags);
-#endif
+ssize_t Sys::wrap_read(int fd, void *buf, size_t count) {
+    ssize_t ret = syscall(__NR_read, fd, buf, count);
     return ret;
 }
 
-ssize_t Syscalls::_read(int __fd, void *__buf, size_t __count) {
-    ssize_t ret = syscall(__NR_read, __fd, __buf, __count);
-    return ret;
-}
-
-int Syscalls::_access(const char *file, int mode) {
-    int ret;
-#if defined(__aarch64__)
-    ret = access(file, mode);
-#else
-    ret = syscall(__NR_access, file, mode);
-#endif
-    return ret;
-}
-
-int Syscalls::_close(int fd) {
+int Sys::wrap_close(int fd) {
     return (int) syscall(__NR_close, fd);
 }
 
-int Syscalls::_openat(int __dir_fd, const char *__path, int __flags) {
-    int ret = (int) syscall(__NR_openat, __dir_fd, __path, __flags);
+uid_t Sys::wrap_getuid(void) {
+    uid_t ret;
+#if defined(__arm__)|| defined(__i386__)
+    ret = (uid_t) syscall(__NR_getuid32);
+#else
+    ret = (uid_t) syscall(__NR_getuid);
+#endif
     return ret;
 }

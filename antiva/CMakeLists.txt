@@ -21,8 +21,7 @@ add_library( # Sets the name of the library.
              src/main/cpp/syscalls.cpp
              src/main/cpp/analysis.cpp
              src/main/cpp/cmdline.cpp
-             src/main/cpp/stringUtils.cpp
-             src/main/cpp/utils.cpp)
+             src/main/cpp/strings.cpp)
 
 # Searches for a specified prebuilt library and stores the path as a
 # variable. Because CMake includes system libraries in the search path by

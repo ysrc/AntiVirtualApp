@@ -5,8 +5,6 @@
       <module fileurl="file://$PROJECT_DIR$/AntiVirtualApp.iml" filepath="$PROJECT_DIR$/AntiVirtualApp.iml" />
       <module fileurl="file://$PROJECT_DIR$/VADetect.iml" filepath="$PROJECT_DIR$/VADetect.iml" />
       <module fileurl="file://$PROJECT_DIR$/antiva/antiva.iml" filepath="$PROJECT_DIR$/antiva/antiva.iml" />
-      <module fileurl="file://$PROJECT_DIR$/antiva/antiva.iml" filepath="$PROJECT_DIR$/antiva/antiva.iml" />
-      <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
     </modules>
   </component>

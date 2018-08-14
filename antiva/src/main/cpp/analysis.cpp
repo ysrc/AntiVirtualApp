@@ -1,10 +1,7 @@
 //
 // Created by qtfreet00 on 2018/1/22.
 //
-
-
 #include "analysis.h"
-
 
 void analysis::findInMaps(int pid, const char *filter, vector<string> &result) {
     char data[256];
@@ -25,7 +22,7 @@ void analysis::findInMaps(int pid, const char *filter, vector<string> &result) {
         if (sscanf(data, "%*llx-%*llx %s %*s %*s %*s %s", uid, path) != 2) {
             continue;
         }
-        if (strcmp(uid, "r-xp") == 0 && stringUtils::endsWith(path, filter)) {
+        if (strcmp(uid, "r-xp") == 0 && Strings::endsWith(path, filter)) {
             result.push_back(path);
         }
     }
@@ -35,8 +32,8 @@ void analysis::findInMaps(int pid, const char *filter, vector<string> &result) {
 
 int analysis::countPathFromUid() {
     int counts = 0;
-    int pid = Syscalls::_getpid();
-    unsigned int uid = Syscalls::_getuid();
+    pid_t pid = Sys::wrap_getpid();
+    uid_t uid = Sys::wrap_getuid();
     struct passwd *password = getpwuid(uid);
     if (password == NULL) {
         return counts;
